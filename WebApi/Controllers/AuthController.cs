@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.AuthService;
 using WebApi.DTOs;
+using WebApi.EmailService;
 
 [ApiController]
 [Route("api/auth")]
@@ -12,14 +13,18 @@ public class AuthController : ControllerBase
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IJwtTokenService _jwt;
 
+    private readonly IEmailService _emailService;
+
     public AuthController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
-        IJwtTokenService jwt)
+        IJwtTokenService jwt,
+        IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _jwt = jwt;
+        _emailService = emailService;
     }
 
     [HttpPost("register")]
@@ -37,6 +42,7 @@ public class AuthController : ControllerBase
             return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
 
         var token = await _jwt.CreateTokenAsync(user);
+        await _emailService.SendAsync(dto.Email, "Registering to App", "You have successfully registered to our application!");
         return Ok(new { token });
     }
 
