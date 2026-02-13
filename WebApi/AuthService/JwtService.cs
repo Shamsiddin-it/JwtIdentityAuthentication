@@ -31,6 +31,7 @@ public class JwtTokenService : IJwtTokenService
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var userClaims = await _userManager.GetClaimsAsync(user); // ✅ ADD THIS
 
         var roles = await _userManager.GetRolesAsync(user);
 
@@ -41,6 +42,9 @@ public class JwtTokenService : IJwtTokenService
             new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
             new(ClaimTypes.Name, user.UserName ?? user.Email ?? user.Id),
         };
+        
+        
+        claims.AddRange(userClaims);
 
         // роли тоже можно положить в токен
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));

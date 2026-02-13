@@ -23,6 +23,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="DTOs\" />
     <Folder Include="EmailService\" />
+    <Folder Include="Seeds\" />
   </ItemGroup>
 
 </Project>

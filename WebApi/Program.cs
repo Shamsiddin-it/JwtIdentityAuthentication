@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using WebApi.AuthService;
 using WebApi.EmailService;
 using WebApi.Entities;
+using WebApi.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +54,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.FromSeconds(30)
         };
     });
-builder.Services.AddAuthorization();
-
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SendEmailPolicy",
+        policy => policy.RequireClaim("Permission", "SendEmail"));
+});
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -94,7 +98,27 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+
+
 var app = builder.Build();
+
+try
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await DefaultRoles.SeedRoles(roleManager);
+
+    app.Logger.LogInformation("Finished Seeding Default Data");
+    app.Logger.LogInformation("Application Starting");
+}
+catch (Exception ex)
+{
+    app.Logger.LogError("An Error occurred while seeding the db:  {ExMessage}", ex.Message);
+}
+
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -1,4 +1,7 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.DTOs;
@@ -13,13 +16,39 @@ namespace WebApi.Controllers
         private readonly IEmailService _emailService = service;
         private readonly UserManager<ApplicationUser> _userManager = userManager;
 
+        [Authorize(Policy = "SendEmailPolicy")]
         [HttpPost]
         public async Task<IActionResult> SendTestEmail()
         {
-            await _emailService.SendAsync("umarmitzoev@gmail.com",
+            await _emailService.SendAsync("samsiddinarbobov@gmail.com",
             "Testing SMTP",
             "Salom, if you are reading this, it is ok!");
             return Ok();
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("add-permission")]
+        public async Task<IActionResult> AddPermissionToUser(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                await _userManager.AddClaimAsync(user,
+                    new Claim("Permission", "SendEmail"));
+            return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [Authorize]
+        [HttpGet("debug/claims")]
+        public IActionResult DebugClaims()
+        {
+            return Ok(User.Claims.Select(c => new { c.Type, c.Value }));
         }
 
         [HttpPost("forgot-password")]

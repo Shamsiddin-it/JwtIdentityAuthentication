@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,29 +44,33 @@ public class AuthController : ControllerBase
 
         var token = await _jwt.CreateTokenAsync(user);
         await _emailService.SendAsync(dto.Email, "Registering to App", "You have successfully registered to our application!");
+        // await _userManager.AddToRoleAsync(user, "Admin");
         return Ok(new { token });
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginDto dto)
+   [HttpPost("login")]
+public async Task<IActionResult> Login([FromBody] LoginDto dto)
+{
+    var user = await _userManager.FindByEmailAsync(dto.Email);
+    if (user is null)
+        return Unauthorized(new { message = "Invalid credentials" });
+
+    var check = await _signInManager.CheckPasswordSignInAsync(
+        user, dto.Password, lockoutOnFailure: true);
+
+    if (!check.Succeeded)
     {
-        var user = await _userManager.FindByEmailAsync(dto.Email);
-        if (user is null)
-            return Unauthorized(new { message = "Invalid credentials" });
-
-        // Проверка пароля + lockoutOnFailure=true
-        var check = await _signInManager.CheckPasswordSignInAsync(
-            user, dto.Password, lockoutOnFailure: true);
-
-        if (!check.Succeeded)
-            return Unauthorized(new
-            {
-                message = check.IsLockedOut ? "Locked out (too many attempts)" : "Invalid credentials"
-            });
-
-        var token = await _jwt.CreateTokenAsync(user);
-        return Ok(new { token });
+        return Unauthorized(new
+        {
+            message = check.IsLockedOut ? "Locked out (too many attempts)" : "Invalid credentials"
+        });
     }
+
+    var token = await _jwt.CreateTokenAsync(user);
+
+    return Ok(new { token });
+}
+
 
     [HttpPost("logout")]
     public IActionResult Logout()
