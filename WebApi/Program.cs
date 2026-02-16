@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using WebApi.AuthService;
 using WebApi.EmailService;
 using WebApi.Entities;
 using WebApi.Seeds;
+using WebApi.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +63,7 @@ builder.Services.AddAuthorization(options =>
 });
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
+builder.Services.AddHostedService<EmailWorker>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddControllers();
@@ -99,6 +102,21 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+
+builder.Services.AddQuartz(q =>
+{
+    var jobKey = new JobKey("ReportJob");
+
+    q.AddJob<ReportJob>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithSimpleSchedule(x =>
+            x.WithIntervalInSeconds(10)
+             .RepeatForever()));
+});
+
+builder.Services.AddQuartzHostedService();
 
 
 var app = builder.Build();

@@ -16,6 +16,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageReference Include="Quartz" Version="3.15.1" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
 
@@ -24,6 +26,7 @@
     <Folder Include="DTOs\" />
     <Folder Include="EmailService\" />
     <Folder Include="Seeds\" />
+    <Folder Include="Workers\" />
   </ItemGroup>
 
 </Project>
