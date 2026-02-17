@@ -1,11 +1,13 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Quartz;
 using WebApi.AuthService;
+using WebApi.CachService;
 using WebApi.EmailService;
 using WebApi.Entities;
 using WebApi.Seeds;
@@ -103,21 +105,23 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
-builder.Services.AddQuartz(q =>
-{
-    var jobKey = new JobKey("ReportJob");
+// builder.Services.AddQuartz(q =>
+// {
+//     var jobKey = new JobKey("ReportJob");
 
-    q.AddJob<ReportJob>(opts => opts.WithIdentity(jobKey));
+//     q.AddJob<ReportJob>(opts => opts.WithIdentity(jobKey));
 
-    q.AddTrigger(opts => opts
-        .ForJob(jobKey)
-        .WithSimpleSchedule(x =>
-            x.WithIntervalInSeconds(10)
-             .RepeatForever()));
-});
+//     q.AddTrigger(opts => opts
+//         .ForJob(jobKey)
+//         .WithSimpleSchedule(x =>
+//             x.WithIntervalInSeconds(10)
+//              .RepeatForever()));
+// });
 
-builder.Services.AddQuartzHostedService();
+// builder.Services.AddQuartzHostedService();
 
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
