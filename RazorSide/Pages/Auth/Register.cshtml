@@ -1,0 +1,39 @@
+﻿@page
+@model RegisterModel
+UserRegistration
+<h1>New user Registration</h1>
+
+@* @if (Model.SuccessMessage != null)
+{
+    <div style="padding:10px; border:1px solid green; margin-bottom:10px;">
+        @Model.SuccessMessage
+    </div>
+} *@
+
+<form method="post">
+    <div asp-validation-summary="All" style="color:red;"></div>
+
+    <div>
+        <label asp-for="registerDto.Email"></label>
+        <input asp-for="registerDto.Email" />
+        <span asp-validation-for="registerDto.Email" style="color:red;"></span>
+    </div>
+
+    <div>
+        <label asp-for="registerDto.FullName"></label>
+        <input asp-for="registerDto.FullName" />
+        <span asp-validation-for="registerDto.FullName" style="color:red;"></span>
+    </div>
+
+    <div>
+        <label asp-for="registerDto.Password"></label>
+        <input asp-for="registerDto.Password" type="password" />
+        <span asp-validation-for="registerDto.Password" style="color:red;"></span>
+    </div>
+
+    <button type="submit">Register</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,13 @@
+﻿@page
+@model UsersModel
+All users
+<h1>Users</h1>
+
+@foreach(var user in Model.users)
+{
+    
+    <div class="users-div"><h1>@user.FullName</h1>
+    <p>@user.Email</p></div>
+}
+
+<button><a href="/Auth/Register">Add User</a></button>

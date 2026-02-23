@@ -1,10 +1,18 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.DTOs;
 
 public class RegisterDto
 {
-    public string Email {get; set;} = string.Empty; 
-    public string Password {get;set;} = null!; 
-    public string FullName {get; set;} = string.Empty;
+    [Required]
+    [EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
+    [Required]
+    [MinLength(8)]
+    public string Password { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(100)]
+    public string FullName { get; set; } = string.Empty;
 }

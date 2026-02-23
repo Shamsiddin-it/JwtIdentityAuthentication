@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -84,4 +85,10 @@ public async Task<IActionResult> Login([FromBody] LoginDto dto)
             name = User.Identity?.Name,
             claims = User.Claims.Select(c => new { c.Type, c.Value })
         });
+
+    [HttpGet("all-users")]
+    public List<ApplicationUser> GetAllUsers()
+    {
+        return _userManager.Users.ToList();
+    }
 }
