@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Pages\Auth\" />
+    <Folder Include="Pages\Products\" />
     <Folder Include="Pages\Users\" />
   </ItemGroup>
 

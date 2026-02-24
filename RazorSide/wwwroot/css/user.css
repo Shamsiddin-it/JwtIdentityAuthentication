@@ -1,3 +1,21 @@
 .users-div{
     background-color: beige;
 }
+
+.products-all{
+    width: 30%;
+    background-color: azure;
+    border: 5px gray solid;
+    border-radius: 10%;
+    text-align: center;
+}
+.products-all>p{
+    font-size: 40px;
+}
+
+.main-div{
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 15px;
+    column-gap: 3%;
+}

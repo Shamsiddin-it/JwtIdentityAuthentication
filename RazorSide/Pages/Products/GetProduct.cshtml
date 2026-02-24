@@ -1,0 +1,10 @@
+﻿@page "{id:int}"
+@model GetProductModel;
+
+<h1>Product</h1>
+
+<p>Id: @Model.productDto.Id</p>
+<p>Name: @Model.productDto.Name</p>
+<p>Price: @Model.productDto.Price</p>
+<p>Description: @Model.productDto.Description</p>
+<button><a href="/Products/Products">Exit</a></button>

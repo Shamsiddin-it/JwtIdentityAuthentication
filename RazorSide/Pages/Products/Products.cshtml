@@ -1,0 +1,14 @@
+﻿@page
+@model Products.ProductsModel;
+
+<h1>All products</h1>
+<div class="main-div">
+@foreach(var item in Model.products){
+    <div class="products-all">
+        <p>Name: @item.Name</p>
+        <p>Price: @item.Price</p>
+        <a href="GetProduct/@item.Id">Details</a>
+    </div>
+}
+</div>
+<button><a href="AddProduct">Add Product</a></button>

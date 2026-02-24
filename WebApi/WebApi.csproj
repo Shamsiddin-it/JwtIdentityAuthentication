@@ -22,11 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CachService\" />
+    <Folder Include="CacheService\" />
     <Folder Include="Controllers\" />
     <Folder Include="DTOs\" />
     <Folder Include="EmailService\" />
+    <Folder Include="Interfaces\" />
     <Folder Include="Seeds\" />
+    <Folder Include="Services\" />
     <Folder Include="Workers\" />
   </ItemGroup>
 
