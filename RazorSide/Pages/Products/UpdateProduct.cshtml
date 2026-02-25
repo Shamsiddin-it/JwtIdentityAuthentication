@@ -1,0 +1,19 @@
+﻿@page "{id:int}"
+@model UpdateProductModel
+
+<form method="post">
+    <div>
+        <label asp-for="createProductDto.Name"></label>
+        <input placeholder="@Model.productDto.Name" asp-for="createProductDto.Name" />
+    </div>
+    <div>
+        <label asp-for="createProductDto.Price"></label>
+        <input placeholder="@Model.productDto.Price" asp-for="createProductDto.Price" />
+    </div>
+    <div>
+        <label asp-for="createProductDto.Description"></label>
+        <input placeholder="@Model.productDto.Description" asp-for="createProductDto.Description" />
+    </div>
+    <button type="submit">Update</button>
+    <button><a href="/Products/Products">Exit</a></button>
+</form>
