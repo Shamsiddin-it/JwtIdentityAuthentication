@@ -10,4 +10,6 @@ public interface IProductService
     Task<List<ProductDto>> GetProducts();
     Task<string> AddProduct(CreateProductDto productDto);
     Task<ProductDto> GetProduct(int id);
+    Task<string> DeleteProduct(int id);
+    Task<string> UpdateProduct(int id, CreateProductDto productDto);
 }

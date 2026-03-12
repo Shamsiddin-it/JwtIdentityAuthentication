@@ -35,4 +35,26 @@ public class ProductService(ApplicationDbContext _dbContext) : IProductService
         var product = await context.products.FindAsync(id);
         return new ProductDto(product.Id, product.Name, product.Price, product.Description);
     }
+
+    public async Task<string> DeleteProduct(int id)
+    {
+        var product = await context.products.FindAsync(id);
+        if (product !=null)
+        {
+            context.products.Remove(product);
+            await context.SaveChangesAsync();
+            return "Deleted";
+        }
+        return "Not Found";
+    }
+
+    public async Task<string> UpdateProduct(int id, CreateProductDto productDto)
+    {
+        var product = context.products.Find(id);
+        product.Name = productDto.Name;
+        product.Price = productDto.Price;
+        product.Description = productDto.Description;
+        await context.SaveChangesAsync();
+        return "updated";
+    }
 }
