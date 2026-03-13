@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>PerformanceDemo.Benchmarks.GetProductsBenchmark-20260313-144609</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26200.8037/25H2/2025Update/HudsonValley2)
+13th Gen Intel Core i7-13700H 2.40GHz, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 10.0.103
+  [Host]     : .NET 10.0.3 (10.0.3, 10.0.326.7603), X64 RyuJIT x86-64-v3
+  DefaultJob : .NET 10.0.3 (10.0.3, 10.0.326.7603), X64 RyuJIT x86-64-v3
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>ProductCount</th><th>Mean </th><th>Error</th><th>StdDev</th><th>Gen0</th><th>Gen1</th><th>Gen2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>GetProducts</td><td>100</td><td>13.53 &mu;s</td><td>0.258 &mu;s</td><td>0.242 &mu;s</td><td>4.0894</td><td>0.2136</td><td>-</td><td>50.31 KB</td>
+</tr><tr><td>GetProducts</td><td>1000</td><td>94.16 &mu;s</td><td>1.813 &mu;s</td><td>1.696 &mu;s</td><td>36.6211</td><td>9.7656</td><td>-</td><td>451.18 KB</td>
+</tr><tr><td>GetProducts</td><td>10000</td><td>3,080.49 &mu;s</td><td>61.108 &mu;s</td><td>110.191 &mu;s</td><td>406.2500</td><td>171.8750</td><td>46.8750</td><td>4558.46 KB</td>
+</tr></tbody></table>
+</body>
+</html>
